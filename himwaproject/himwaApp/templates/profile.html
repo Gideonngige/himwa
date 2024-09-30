@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'styles.css' %}?{% now "U" %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <title>profile</title>
+</head>
+<body>
+    <nav>  
+    <div class="dropdown">
+        <button class="dropbtn"><h4 >{{user_name}}</h4></button>
+        <div class="dropdown-content">
+        <a href="#">Profile</a>
+        <a href="{% url 'home' %}">About Us</a>
+        <a href="{% url 'members' %}">Members</a>
+        </div>
+      </div>
+      
+    </nav>
+<div class="login-page">
+<div class="card">
+  <img src="{% static 'images/user.png' %}" alt="Avatar" style="width:100%">
+  <div class="container">
+    <h4><b>Name: {{user_name}}</b></h4> 
+    <p>Phone number: {{user_phone}}</p> 
+    <p>Email: {{user_email}}</p>
+  </div>
+</div>
+</div>
+<div class="login-page">
+    <div class="card">
+      <h2>Payments</h2>
+      <div class="container">
+        <h4><b>Total Billed: Ksh.{{user_bill}}</b></h4> 
+        <p>Total Paid: Ksh.{{user_paid}}</p> 
+        <p>Balance: Ksh.{{balance}}</p>
+        <form method="post" action="{% url 'payment' %}">
+          {% csrf_token %}
+        <input type="submit" value="Make Payment" />
+      </form>
+      </div>
+    </div>
+    </div>
+    <div class="login-page">
+        <div class="card">
+          <h2>Water Consumption</h2>
+          <div class="container">
+            <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+          </div>
+        </div>
+        </div>
+        <!--data from backend-->
+        <div style="display: none;">
+        <input type="number" id="jan" value={{january_bill}} />
+        <input type="number" id="feb" value={{february_bill}} />
+        <input type="number" id="mar" value={{march_bill}} />
+      </div>
+
+<!--javascript files-->
+<script>
+    const jan_bill = document.getElementById('jan').value;
+    const feb_bill = document.getElementById('feb').value;
+    const mar_bill = document.getElementById('mar').value;
+    const xValues = ['jan','feb','mar','apr','may','june','july','aug','sep','oct'];
+    
+    new Chart("myChart", {
+      type: "line",
+      data: {
+        labels: xValues,
+        datasets: [{ 
+          data: [jan_bill,feb_bill,mar_bill,],
+          borderColor: "blue",
+          fill: false
+        },]
+      },
+      options: {
+        legend: {display: false}
+      }
+    });
+    </script>
+    
+    
+</body>
+</html>

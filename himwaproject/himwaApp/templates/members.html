@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'styles.css' %}?{% now "U" %}">
+  
+    <title>members</title>
+</head>
+<body>
+    <div class="members">
+        <div class="members-inner">
+            <div class="search">
+                <form method="post" action="{% url 'members'  %}">
+                    {% csrf_token %}
+                <input type="search" name="search" placeholder="Search..."/>
+                
+                <input type="submit" name="searchBtn" value="Search" />
+            </form>
+            </div>
+            <h2>Himwa Members</h2>
+            <table border="1" width="100%">
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+            </tr>
+            {% for x in users%}
+            <tr>
+                <td>{{x.name}}</td>
+                <td>{{x.email}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <p>{{user_search_result}}</p>
+
+        </div>
+    </div>
+    
+</body>
+</html>
